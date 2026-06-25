@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HalluDetect — AI Code Hallucination Scanner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <div class="nav-logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">HalluDetect</span>
+      </div>
+      <span class="nav-tag">AI Hallucination Research Tool</span>
+    </div>
+    <div class="nav-links">
+      <a href="#scanner" class="nav-link active">Scanner</a>
+      <a href="#papers" class="nav-link">Research</a>
+      <a href="#about" class="nav-link">About</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Based on Systematic Literature Review · 6 verified papers</div>
+    <h1 class="hero-title">Does your AI-generated code <span class="hero-accent">hallucinate?</span></h1>
+    <p class="hero-sub">Paste any code snippet. HalluDetect scans for fabricated APIs, non-existent methods, and suspicious patterns — grounded in peer-reviewed research.</p>
+  </section>
+
+  <!-- STATS ROW -->
+  <section class="stats-row">
+    <div class="stat-card">
+      <span class="stat-num" id="stat-issues">0</span>
+      <span class="stat-label">Issues found</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" id="stat-high">0</span>
+      <span class="stat-label">High severity</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" id="stat-score">—</span>
+      <span class="stat-label">Risk score</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" id="stat-types">0</span>
+      <span class="stat-label">Hallucination types</span>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <main class="main-layout" id="scanner">
+
+    <!-- LEFT: INPUT + RESULTS -->
+    <div class="left-col">
+
+      <!-- Code Input Panel -->
+      <div class="panel" id="input-panel">
+        <div class="panel-header">
+          <span class="panel-title">Code input</span>
+          <div class="lang-selector">
+            <select id="lang-select">
+              <option value="python">Python</option>
+              <option value="javascript">JavaScript</option>
+              <option value="java">Java</option>
+            </select>
+          </div>
+        </div>
+        <textarea
+          id="code-input"
+          class="code-textarea"
+          spellcheck="false"
+          placeholder="Paste your AI-generated code here...
+
+Example:
+from sklearn.magic import AutoFix
+result = model.auto_correct(data, fix=True)"
+        ></textarea>
+        <div class="input-actions">
+          <button class="btn-scan" id="scan-btn" onclick="runScan()">
+            <span class="btn-icon">▶</span> Scan for hallucinations
+          </button>
+          <button class="btn-ghost" onclick="clearAll()">Clear</button>
+          <button class="btn-ghost" onclick="loadExample()">Load example</button>
+        </div>
+      </div>
+
+      <!-- Results Panel (hidden until scan) -->
+      <div class="panel" id="results-panel" style="display:none;">
+        <div class="panel-header">
+          <span class="panel-title">Issues detected</span>
+          <span class="results-count" id="results-count">0 issues</span>
+        </div>
+        <div id="issues-list"></div>
+
+        <!-- Empty state -->
+        <div id="empty-state" style="display:none;">
+          <div class="empty-icon">✓</div>
+          <div class="empty-title">No hallucinations detected</div>
+          <div class="empty-desc">This code looks clean based on known patterns. Always verify with official documentation.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SCORE + PAPERS -->
+    <div class="right-col">
+
+      <!-- Risk Score Panel -->
+      <div class="panel score-panel" id="score-panel" style="display:none;">
+        <div class="panel-title" style="margin-bottom:16px;">Hallucination risk</div>
+
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#f0f0f0" stroke-width="6"/>
+            <circle cx="40" cy="40" r="34" fill="none"
+              id="score-circle"
+              stroke="#E24B4A"
+              stroke-width="6"
+              stroke-linecap="round"
+              stroke-dasharray="213.6"
+              stroke-dashoffset="213.6"
+              transform="rotate(-90 40 40)"/>
+          </svg>
+          <div class="score-inner">
+            <span class="score-number" id="score-number">0</span>
+            <span class="score-denom">/100</span>
+          </div>
+        </div>
+
+        <div class="risk-label" id="risk-label">—</div>
+
+        <div class="type-bars" id="type-bars"></div>
+      </div>
+
+      <!-- Papers Panel -->
+      <div class="panel papers-panel" id="papers">
+        <div class="panel-header">
+          <span class="panel-title">Research basis</span>
+          <span class="papers-count">6 papers · SLR</span>
+        </div>
+        <div id="papers-list"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ABOUT SECTION -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-label">About this tool</div>
+      <h2 class="about-title">Built on research, not guesswork</h2>
+      <p class="about-desc">HalluDetect's detection patterns are derived from a Systematic Literature Review (SLR) of 6 peer-reviewed papers on AI-generated code hallucination. Every flagged issue maps to a hallucination category documented in published research — including CodeHalu (Tian et al., 2024), HALLUCODE (Liu et al., 2024), and Zhang et al. (ISSTA 2024).</p>
+      <div class="about-tags">
+        <span class="about-tag">Fabricated API detection</span>
+        <span class="about-tag">Non-existent method flags</span>
+        <span class="about-tag">Wrong syntax confidence</span>
+        <span class="about-tag">Package hallucination</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>HalluDetect · Built by Taslima · Grounded in SLR research on AI code hallucination</span>
+  </footer>
+
+  <script src="patterns.js"></script>
+  <script src="papers.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
