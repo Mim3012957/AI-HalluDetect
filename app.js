@@ -114,10 +114,15 @@ function displayResults(issues) {
     const card = document.createElement('div');
     card.className = `issue-card severity-${issue.severity}`;
 
+    const taxo = TAXONOMY[issue.category];
+
     card.innerHTML = `
       <div class="issue-header">
         <span class="issue-type type-${issue.severity}">${issue.type}</span>
         <span class="issue-line">Line ${issue.lineNumber}</span>
+      </div>
+      <div class="taxonomy-tag" title="${taxo.desc}">
+        ${taxo.label} → ${issue.subCategory}
       </div>
       <div class="issue-title">${issue.title}</div>
       <div class="issue-desc">${issue.desc}</div>
@@ -219,3 +224,13 @@ function updateScore(issues) {
     `;
   });
 }
+
+ 
+
+
+
+ 
+
+
+
+      
