@@ -266,4 +266,3 @@ const HALLUCINATION_PATTERNS = [
   },
 ];
   
-
