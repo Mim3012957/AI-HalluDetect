@@ -225,9 +225,6 @@ function updateScore(issues) {
   });
 }
 
- 
-
-
 
  
 
